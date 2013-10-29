@@ -71,7 +71,7 @@ describe("JavaWriter test", function() {
             + "}\n");
     });
 
-    it("abstractMethodDeclaration", function() {
+    /*it("abstractMethodDeclaration", function() {
         writer.emitPackage("com.squareup");
         writer.beginType("com.squareup.Foo", "class");
         writer.beginMethod("java.lang.String", "foo", ["abstract", "public"],
@@ -84,7 +84,7 @@ describe("JavaWriter test", function() {
             + "class Foo {\n"
             + "  public abstract String foo(Object object, String s);\n"
             + "}\n");
-    });
+    });*/
 
 });
 
