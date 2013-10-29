@@ -53,7 +53,7 @@ Download
 
 Via Git:
 ```shell
-git clone git@github.com:preynal/javawriter.git
+git clone https://github.com/preynal/javawriter.git
 ```
 
 Or via NPM:
