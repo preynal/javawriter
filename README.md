@@ -19,11 +19,11 @@ Example
 ```js
 var Writer = require("javawriter");
 new Writer().emitPackage("com.example")
-    .beginType("com.example.Person", "class", EnumSet.of(PUBLIC, FINAL))
-    .emitField("String", "firstName", EnumSet.of(PRIVATE))
-    .emitField("String", "lastName", EnumSet.of(PRIVATE))
+    .beginType("com.example.Person", "class", ["public", "final"])
+    .emitField("String", "firstName", ["private"])
+    .emitField("String", "lastName", ["private"])
     .emitJavadoc("Returns the person's full name.")
-    .beginMethod("String", "getName", EnumSet.of(PUBLIC))
+    .beginMethod("String", "getName", ["public"])
     .emitStatement("return firstName + \" \" + lastName")
     .endMethod()
     .endType();
@@ -51,7 +51,12 @@ public final class Person {
 Download
 --------
 
-Download [the latest .jar][dl] or depend via Maven:
+Via Git:
+```shell
+git clone git@github.com:preynal/javawriter.git
+```
+
+Or via NPM:
 
 ```shell
 npm install javawriter
