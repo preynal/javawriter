@@ -71,7 +71,7 @@ describe("JavaWriter test", function() {
             + "}\n");
     });
 
-    /*it("abstractMethodDeclaration", function() {
+    it("abstractMethodDeclaration", function() {
         writer.emitPackage("com.squareup");
         writer.beginType("com.squareup.Foo", "class");
         writer.beginMethod("java.lang.String", "foo", ["abstract", "public"],
@@ -84,7 +84,105 @@ describe("JavaWriter test", function() {
             + "class Foo {\n"
             + "  public abstract String foo(Object object, String s);\n"
             + "}\n");
-    });*/
+    });
+
+    it("abstractMethodDeclarationWithThrows", function() {
+        writer.emitPackage("com.squareup");
+        writer.beginType("com.squareup.Foo", "class");
+        writer.beginMethod("java.lang.String", "foo", ["abstract", "public"],
+            ["java.lang.Object", "object", "java.lang.String", "s"],
+            ["java.io.IOException"]);
+        writer.endMethod();
+        writer.endType();
+        assertCode(""
+            + "package com.squareup;\n"
+            + "\n"
+            + "class Foo {\n"
+            + "  public abstract String foo(Object object, String s)\n"
+            + "      throws java.io.IOException;\n"
+            + "}\n");
+    });
+
+    it("nonAbstractMethodDeclaration", function() {
+        writer.emitPackage("com.squareup");
+        writer.beginType("com.squareup.Foo", "class");
+        writer.beginMethod("int", "foo", [], "java.lang.String", "s");
+        writer.endMethod();
+        writer.endType();
+        assertCode(""
+            + "package com.squareup;\n"
+            + "\n"
+            + "class Foo {\n"
+            + "  int foo(String s) {\n"
+            + "  }\n"
+            + "}\n");
+    });
+
+    it("nonAbstractMethodDeclarationWithThrows", function() {
+        writer.emitPackage("com.squareup");
+        writer.beginType("com.squareup.Foo", "class");
+        writer.beginMethod("int", "foo", [],
+            ["java.lang.String", "s"], ["java.io.IOException"]);
+        writer.endMethod();
+        writer.endType();
+        assertCode(""
+            + "package com.squareup;\n"
+            + "\n"
+            + "class Foo {\n"
+            + "  int foo(String s)\n"
+            + "      throws java.io.IOException {\n"
+            + "  }\n"
+            + "}\n");
+    });
+
+    it("constructorDeclaration", function() {
+        writer.emitPackage("com.squareup");
+        writer.beginType("com.squareup.Foo", "class");
+        writer.beginMethod(null, "com.squareup.Foo", "public", "java.lang.String", "s");
+        writer.endMethod();
+        writer.endType();
+        assertCode(""
+            + "package com.squareup;\n"
+            + "\n"
+            + "class Foo {\n"
+            + "  public Foo(String s) {\n"
+            + "  }\n"
+            + "}\n");
+    });
+
+    it("constructorDeclarationWithThrows", function() {
+        witer.emitPackage("com.squareup");
+        witer.beginType("com.squareup.Foo", "class");
+        witer.beginMethod(null, "com.squareup.Foo", "public",
+            ["java.lang.String", "s"], ["java.io.IOException"]);
+        witer.endMethod();
+        witer.endType();
+        assertCode(""
+            + "package com.squareup;\n"
+            + "\n"
+            + "class Foo {\n"
+            + "  public Foo(String s)\n"
+            + "      throws java.io.IOException {\n"
+            + "  }\n"
+            + "}\n");
+    });
+
+    it("statement", function() {
+        javaWriter.emitPackage("com.squareup");
+        javaWriter.beginType("com.squareup.Foo", "class");
+        javaWriter.beginMethod("int", "foo", [], "java.lang.String", "s");
+        javaWriter.emitStatement("int j = s.length() + %s", 13);
+        javaWriter.endMethod();
+        javaWriter.endType();
+        assertCode(""
+            + "package com.squareup;\n"
+            + "\n"
+            + "class Foo {\n"
+            + "  int foo(String s) {\n"
+            + "    int j = s.length() + 13;\n"
+            + "  }\n"
+            + "}\n");
+    });
 
 });
 
