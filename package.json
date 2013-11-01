@@ -1,10 +1,10 @@
 {
-   "name" : "APPNAME",
-   "description" : "DESCRIPTIONHERE",
+   "name" : "javawriter",
+   "description" : "A utility module for generating Java source files.",
    "version" : "0.1.0",
-   "homepage" : "http://github.com/wearefractal/APPNAME",
-   "repository" : "git://github.com/wearefractal/APPNAME.git",
-   "author" : "Fractal <contact@wearefractal.com> (http://wearefractal.com/)",
+   "homepage" : "http://github.com/preynal/javawriter",
+   "repository" : "git://github.com/preynal/javawriter.git",
+   "author" : "Philippe de Reynal <philippe@dereynal.com> (http://github.com/preynal)",
    "main" : "./javawriter.js",
 
    "dependencies" : {
@@ -21,8 +21,8 @@
 
    "licenses" : [
       {
-         "type":"MIT",
-         "url":"http://github.com/wearefractal/APPNAME/raw/master/LICENSE"
+         "type" : "Apache",
+         "url" : "http://github.com/preynal/javawriter/raw/master/LICENSE"
       }
    ]
 }
