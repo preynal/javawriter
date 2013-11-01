@@ -20,7 +20,6 @@ describe("JavaWriter test", function() {
         assertCode(""
             + "package com.squareup;\n"
             + "\n"
-            //+ "public final class Foo {\n"
             + "public final class com.squareup.Foo {\n"
             + "}\n");
     });
@@ -34,7 +33,6 @@ describe("JavaWriter test", function() {
         assertCode(""
             + "package com.squareup;\n"
             + "\n"
-            //+ "public enum Foo {\n"
             + "public enum com.squareup.Foo {\n"
             + "  BAR,\n"
             + "  BAZ,\n"
@@ -49,9 +47,7 @@ describe("JavaWriter test", function() {
         assertCode(""
             + "package com.squareup;\n"
             + "\n"
-            //+ "class Foo {\n"
             + "class com.squareup.Foo {\n"
-            //+ "  private static String string;\n"
             + "  private static java.lang.String string;\n"
             + "}\n");
     });
@@ -64,9 +60,7 @@ describe("JavaWriter test", function() {
         assertCode(""
             + "package com.squareup;\n"
             + "\n"
-            //+ "class Foo {\n"
             + "class com.squareup.Foo {\n"
-            //+ "  String string = \"bar\" + \"baz\";\n"
             + "  java.lang.String string = \"bar\" + \"baz\";\n"
             + "}\n");
     });
@@ -75,14 +69,14 @@ describe("JavaWriter test", function() {
         writer.emitPackage("com.squareup");
         writer.beginType("com.squareup.Foo", "class");
         writer.beginMethod("java.lang.String", "foo", ["abstract", "public"],
-            "java.lang.Object", "object", "java.lang.String", "s");
+            ["java.lang.Object", "object", "java.lang.String", "s"]);
         writer.endMethod();
         writer.endType();
         assertCode(""
             + "package com.squareup;\n"
             + "\n"
-            + "class Foo {\n"
-            + "  public abstract String foo(Object object, String s);\n"
+            + "class com.squareup.Foo {\n"
+            + "  public abstract java.lang.String foo(java.lang.Object object, java.lang.String s);\n"
             + "}\n");
     });
 
@@ -97,8 +91,8 @@ describe("JavaWriter test", function() {
         assertCode(""
             + "package com.squareup;\n"
             + "\n"
-            + "class Foo {\n"
-            + "  public abstract String foo(Object object, String s)\n"
+            + "class com.squareup.Foo {\n"
+            + "  public abstract java.lang.String foo(java.lang.Object object, java.lang.String s)\n"
             + "      throws java.io.IOException;\n"
             + "}\n");
     });
@@ -106,14 +100,14 @@ describe("JavaWriter test", function() {
     it("nonAbstractMethodDeclaration", function() {
         writer.emitPackage("com.squareup");
         writer.beginType("com.squareup.Foo", "class");
-        writer.beginMethod("int", "foo", [], "java.lang.String", "s");
+        writer.beginMethod("int", "foo", [], ["java.lang.String", "s"]);
         writer.endMethod();
         writer.endType();
         assertCode(""
             + "package com.squareup;\n"
             + "\n"
-            + "class Foo {\n"
-            + "  int foo(String s) {\n"
+            + "class com.squareup.Foo {\n"
+            + "  int foo(java.lang.String s) {\n"
             + "  }\n"
             + "}\n");
     });
@@ -128,8 +122,8 @@ describe("JavaWriter test", function() {
         assertCode(""
             + "package com.squareup;\n"
             + "\n"
-            + "class Foo {\n"
-            + "  int foo(String s)\n"
+            + "class com.squareup.Foo {\n"
+            + "  int foo(java.lang.String s)\n"
             + "      throws java.io.IOException {\n"
             + "  }\n"
             + "}\n");
@@ -138,51 +132,266 @@ describe("JavaWriter test", function() {
     it("constructorDeclaration", function() {
         writer.emitPackage("com.squareup");
         writer.beginType("com.squareup.Foo", "class");
-        writer.beginMethod(null, "com.squareup.Foo", "public", "java.lang.String", "s");
+        writer.beginMethod(null, "com.squareup.Foo", "public", ["java.lang.String", "s"]);
         writer.endMethod();
         writer.endType();
         assertCode(""
             + "package com.squareup;\n"
             + "\n"
-            + "class Foo {\n"
-            + "  public Foo(String s) {\n"
+            + "class com.squareup.Foo {\n"
+            + "  public com.squareup.Foo(java.lang.String s) {\n"
             + "  }\n"
             + "}\n");
     });
 
     it("constructorDeclarationWithThrows", function() {
-        witer.emitPackage("com.squareup");
-        witer.beginType("com.squareup.Foo", "class");
-        witer.beginMethod(null, "com.squareup.Foo", "public",
+        writer.emitPackage("com.squareup");
+        writer.beginType("com.squareup.Foo", "class");
+        writer.beginMethod(null, "com.squareup.Foo", "public",
             ["java.lang.String", "s"], ["java.io.IOException"]);
-        witer.endMethod();
-        witer.endType();
+        writer.endMethod();
+        writer.endType();
         assertCode(""
             + "package com.squareup;\n"
             + "\n"
-            + "class Foo {\n"
-            + "  public Foo(String s)\n"
+            + "class com.squareup.Foo {\n"
+            + "  public com.squareup.Foo(java.lang.String s)\n"
             + "      throws java.io.IOException {\n"
             + "  }\n"
             + "}\n");
     });
 
     it("statement", function() {
-        javaWriter.emitPackage("com.squareup");
-        javaWriter.beginType("com.squareup.Foo", "class");
-        javaWriter.beginMethod("int", "foo", [], "java.lang.String", "s");
-        javaWriter.emitStatement("int j = s.length() + %s", 13);
-        javaWriter.endMethod();
-        javaWriter.endType();
+        writer.emitPackage("com.squareup");
+        writer.beginType("com.squareup.Foo", "class");
+        writer.beginMethod("int", "foo", [], ["java.lang.String", "s"]);
+        writer.emitStatement("int j = s.length() + {0}", 13);
+        writer.endMethod();
+        writer.endType();
         assertCode(""
             + "package com.squareup;\n"
             + "\n"
-            + "class Foo {\n"
-            + "  int foo(String s) {\n"
+            + "class com.squareup.Foo {\n"
+            + "  int foo(java.lang.String s) {\n"
             + "    int j = s.length() + 13;\n"
             + "  }\n"
             + "}\n");
     });
+
+    it("statementPrecededByComment", function() {
+        writer.emitPackage("com.squareup");
+        writer.beginType("com.squareup.Foo", "class");
+        writer.beginMethod("int", "foo", [], ["java.lang.String", "s"]);
+        writer.emitSingleLineComment("foo");
+        writer.emitStatement("int j = s.length() + {0}", 13);
+        writer.endMethod();
+        writer.endType();
+        assertCode(""
+            + "package com.squareup;\n"
+            + "\n"
+            + "class com.squareup.Foo {\n"
+            + "  int foo(java.lang.String s) {\n"
+            + "    // foo\n"
+            + "    int j = s.length() + 13;\n"
+            + "  }\n"
+            + "}\n");
+    });
+
+    it("multiLineStatement", function() {
+        writer.emitPackage("com.squareup");
+        writer.beginType("com.squareup.Triangle", "class");
+        writer.beginMethod("double", "pythagorean", [],
+            ["int", "a", "int", "b"]);
+        writer.emitStatement("int cSquared = a * a\n+ b * b");
+        writer.emitStatement("return Math.sqrt(cSquared)");
+        writer.endMethod();
+        writer.endType();
+        assertCode(""
+            + "package com.squareup;\n"
+            + "\n"
+            + "class com.squareup.Triangle {\n"
+            + "  double pythagorean(int a, int b) {\n"
+            + "    int cSquared = a * a\n"
+            + "        + b * b;\n"
+            + "    return Math.sqrt(cSquared);\n"
+            + "  }\n"
+            + "}\n");
+    });
+
+    it("addImport", function() {
+        writer.emitPackage("com.squareup");
+        writer.emitImports("java.util.ArrayList");
+        writer.beginType("com.squareup.Foo", "class", ["public", "final"]);
+        writer.emitField("java.util.ArrayList", "list", [], "new java.util.ArrayList()");
+        writer.endType();
+        assertCode(""
+            + "package com.squareup;\n"
+            + "\n"
+            + "import java.util.ArrayList;\n"
+            + "public final class com.squareup.Foo {\n"
+            + "  java.util.ArrayList list = new java.util.ArrayList();\n"
+            + "}\n");
+    });
+
+    it("addStaticImport", function() {
+        writer.emitPackage("com.squareup");
+        writer.emitStaticImports("java.lang.System.getProperty");
+        writer.beginType("com.squareup.Foo", "class", ["public", "final"]);
+        writer.emitField("String", "bar", [], "getProperty(\"bar\")");
+        writer.endType();
+        assertCode(""
+            + "package com.squareup;\n"
+            + "\n"
+            + "import static java.lang.System.getProperty;\n"
+            + "public final class com.squareup.Foo {\n"
+            + "  String bar = getProperty(\"bar\");\n"
+            + "}\n");
+    });
+
+    it("addStaticWildcardImport", function() {
+        writer.emitPackage("com.squareup");
+        writer.emitStaticImports("java.lang.System.*");
+        writer.beginType("com.squareup.Foo", "class", ["public", "final"]);
+        writer.emitField("String", "bar", [], "getProperty(\"bar\")");
+        writer.endType();
+        assertCode(""
+            + "package com.squareup;\n"
+            + "\n"
+            + "import static java.lang.System.*;\n"
+            + "public final class com.squareup.Foo {\n"
+            + "  String bar = getProperty(\"bar\");\n"
+            + "}\n");
+    });
+
+    it("emptyImports", function() {
+        writer.emitPackage("com.squareup");
+        writer.emitImports();
+        writer.beginType("com.squareup.Foo", "class", ["public", "final"]);
+        writer.endType();
+        assertCode(""
+            + "package com.squareup;\n"
+            + "\n"
+            + "public final class com.squareup.Foo {\n"
+            + "}\n");
+    });
+
+    it("emptyStaticImports", function() {
+        writer.emitPackage("com.squareup");
+        writer.emitStaticImports();
+        writer.beginType("com.squareup.Foo", "class", ["public", "final"]);
+        writer.endType();
+        assertCode(""
+            + "package com.squareup;\n"
+            + "\n"
+            + "public final class com.squareup.Foo {\n"
+            + "}\n");
+    });
+
+    it("addImportFromSubpackage", function() {
+        writer.emitPackage("com.squareup");
+        writer.beginType("com.squareup.Foo", "class", ["public", "final"]);
+        writer.emitField("com.squareup.bar.Baz", "baz");
+        writer.endType();
+        assertCode(""
+            + "package com.squareup;\n"
+            + "\n"
+            + "public final class com.squareup.Foo {\n"
+            + "  com.squareup.bar.Baz baz;\n"
+            + "}\n");
+    });
+
+    it("ifControlFlow", function() {
+        writer.emitPackage("com.squareup");
+        writer.beginType("com.squareup.Foo", "class");
+        writer.beginMethod("int", "foo", [], ["java.lang.String", "s"]);
+        writer.beginControlFlow("if (s.isEmpty())");
+        writer.emitStatement("int j = s.length() + {0}", 13);
+        writer.endControlFlow();
+        writer.endMethod();
+        writer.endType();
+        assertCode(""
+            + "package com.squareup;\n"
+            + "\n"
+            + "class com.squareup.Foo {\n"
+            + "  int foo(java.lang.String s) {\n"
+            + "    if (s.isEmpty()) {\n"
+            + "      int j = s.length() + 13;\n"
+            + "    }\n"
+            + "  }\n"
+            + "}\n");
+    });
+
+    it("doWhileControlFlow", function() {
+        writer.emitPackage("com.squareup");
+        writer.beginType("com.squareup.Foo", "class");
+        writer.beginMethod("int", "foo", [], ["java.lang.String", "s"]);
+        writer.beginControlFlow("do");
+        writer.emitStatement("int j = s.length() + {0}", 13);
+        writer.endControlFlow("while (s.isEmpty())");
+        writer.endMethod();
+        writer.endType();
+        assertCode(""
+            + "package com.squareup;\n"
+            + "\n"
+            + "class com.squareup.Foo {\n"
+            + "  int foo(java.lang.String s) {\n"
+            + "    do {\n"
+            + "      int j = s.length() + 13;\n"
+            + "    } while (s.isEmpty());\n"
+            + "  }\n"
+            + "}\n");
+    });
+
+    it("tryCatchFinallyControlFlow", function() {
+        writer.emitPackage("com.squareup");
+        writer.beginType("com.squareup.Foo", "class");
+        writer.beginMethod("int", "foo", [], ["java.lang.String", "s"]);
+        writer.beginControlFlow("try");
+        writer.emitStatement("int j = s.length() + {0}", 13);
+        writer.nextControlFlow("catch (RuntimeException e)");
+        writer.emitStatement("e.printStackTrace()");
+        writer.nextControlFlow("finally");
+        writer.emitStatement("int k = {0}", 13);
+        writer.endControlFlow();
+        writer.endMethod();
+        writer.endType();
+        assertCode(""
+            + "package com.squareup;\n"
+            + "\n"
+            + "class com.squareup.Foo {\n"
+            + "  int foo(java.lang.String s) {\n"
+            + "    try {\n"
+            + "      int j = s.length() + 13;\n"
+            + "    } catch (RuntimeException e) {\n"
+            + "      e.printStackTrace();\n"
+            + "    } finally {\n"
+            + "      int k = 13;\n"
+            + "    }\n"
+            + "  }\n"
+            + "}\n");
+    });
+
+    /*it("annotatedType", function() {
+        writer.emitPackage("com.squareup");
+        writer.emitImports("javax.inject.Singleton");
+        writer.emitAnnotation("javax.inject.Singleton");
+        writer.emitAnnotation(SuppressWarnings.class,
+            JavaWriter.stringLiteral("unchecked"));
+        writer.beginType("com.squareup.Foo", "class");
+        writer.endType();
+        assertCode(""
+            + "package com.squareup;\n"
+            + "\n"
+            + "import javax.inject.Singleton;\n"
+            + "@Singleton\n"
+            + "@SuppressWarnings(\"unchecked\")\n"
+            + "class Foo {\n"
+            + "}\n");
+    });
+
+    it("emptyImports", function() {
+
+    });*/
 
 });
 
